@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./shop.styles.scss";
 
 import { Route } from "react-router-dom";
@@ -8,29 +8,25 @@ import CollectionsOverviewContainer from "../../components/collections-overview/
 import CollectionPageContainer from "../collection/collection.container";
 import { fetchCollectionsStart } from "../../redux/shop/shop.sagas";
 
-class ShopPage extends React.Component {
-    componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
+const ShopPage = ({ fetchCollectionsStart, match }) => {
+    useEffect(() => {
         fetchCollectionsStart();
-    }
+    }, [fetchCollectionsStart])
 
-    render() {
-        const { match } = this.props;
-        return (
-            <div className="shop-page">
-                {/* In the smae ShopPage, we are showing two components with nested routing. When it matches /shop, it renders all collection items. When it matches /shop/:collectionId, it renders the respective collection. */}
-                <Route
-                    exact
-                    path={`${match.path}`}
-                    component={CollectionsOverviewContainer}
-                />
-                <Route
-                    path={`${match.path}/:collectionId`}
-                    component={CollectionPageContainer}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="shop-page">
+            {/* In the smae ShopPage, we are showing two components with nested routing. When it matches /shop, it renders all collection items. When it matches /shop/:collectionId, it renders the respective collection. */}
+            <Route
+                exact
+                path={`${match.path}`}
+                component={CollectionsOverviewContainer}
+            />
+            <Route
+                path={`${match.path}/:collectionId`}
+                component={CollectionPageContainer}
+            />
+        </div>
+    );
 }
 
 const mapDispatchToProps = (dispatch) => ({
